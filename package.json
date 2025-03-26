@@ -2,11 +2,11 @@
   "name": "api",
   "version": "1.0.0",
   "description": "",
-  "main": "src/index.js",
+  "main": "index.js",
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "start": "node dist/app.js",
-    "dev": "nodemon -w src --exec ts-node src/app.ts"
+    "dev": "nodemon -w  --exec ts-node app.ts"
   },
   "keywords": [],
   "author": "",
