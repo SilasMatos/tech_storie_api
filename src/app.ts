@@ -1,3 +1,5 @@
+// src/app.ts
+
 import fastify, { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import 'dotenv/config';
 import { MainRoutes } from './routes/Router';
@@ -9,11 +11,19 @@ class App {
 
   constructor() {
     this.server = fastify();
-    this.server.register(cors, {
+    this.setup();
+  }
+
+  private async setup() {
+    await this.registerPlugins();
+    this.routes();
+    await this.connectToDb();
+  }
+
+  private async registerPlugins() {
+    await this.server.register(cors, {
       origin: ['http://localhost:5173', 'http://localhost:3001']
     });
-    this.routes();
-    this.connectToDb();
   }
 
   private routes() {
@@ -22,28 +32,22 @@ class App {
   }
 
   private async index(request: FastifyRequest, reply: FastifyReply) {
-    reply.send({ message: 'Seja, bem vindo' });
+    reply.send({ message: '🚀 API Online: Seja bem-vindo!' });
   }
 
   private async connectToDb() {
     await connectToDb();
   }
 
-  public start() {
-    const port = process.env.PORT || 3000;
-    this.server.listen(
-      {
-        port: Number(port),
-        host: '0.0.0.0'
-      },
-      (err, address) => {
-        if (err) {
-          console.error(err);
-          process.exit(1);
-        }
-        console.log(`Server is running on ${address} ✅`);
-      }
-    );
+  public async start() {
+    const port = Number(process.env.PORT || 3000);
+    try {
+      await this.server.listen({ port, host: '0.0.0.0' });
+      console.log(`✅ Server is running on http://localhost:${port}`);
+    } catch (err) {
+      console.error('❌ Failed to start server:', err);
+      process.exit(1);
+    }
   }
 }
 
