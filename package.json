@@ -2,7 +2,7 @@
   "name": "api",
   "version": "1.0.0",
   "description": "",
-  "main": "src/index.js",
+  "main": "dist/app.js",
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "start": "node dist/app.js",
