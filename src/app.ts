@@ -11,10 +11,19 @@ class App {
 
   constructor() {
     this.server = fastify();
+    this.setup();
+  }
+
+  private setup() {
+    // Configurações iniciais
     this.server.register(cors, {
       origin: ['http://localhost:5173', 'http://localhost:3001'],
     });
+
+    // Registra rotas
     this.routes();
+
+    // Conecta ao banco de dados
     this.connectToDb();
   }
 
