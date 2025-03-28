@@ -5,7 +5,6 @@ import 'dotenv/config';
 import { MainRoutes } from './routes/Router';
 import cors from '@fastify/cors';
 import { connectToDb } from './configs/database';
-
 class App {
   private server: FastifyInstance;
 
@@ -16,19 +15,19 @@ class App {
 
   private async setup() {
     await this.registerPlugins();
-    this.routes();
+    this.routes(); // Registra as rotas antes de iniciar o servidor
     await this.connectToDb();
   }
 
   private async registerPlugins() {
     await this.server.register(cors, {
-      origin: ['http://localhost:5173', 'http://localhost:3001']
+      origin: ['http://localhost:5173', 'http://localhost:3001'],
     });
   }
 
   private routes() {
-    this.server.get('/', this.index);
-    new MainRoutes(this.server);
+    this.server.get('/', this.index); // Rota principal
+    new MainRoutes(this.server); // Registra as rotas principais
   }
 
   private async index(request: FastifyRequest, reply: FastifyReply) {
