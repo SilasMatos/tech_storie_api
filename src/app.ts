@@ -5,24 +5,17 @@ import 'dotenv/config';
 import { MainRoutes } from './routes/Router';
 import cors from '@fastify/cors';
 import { connectToDb } from './configs/database';
+
 class App {
   private server: FastifyInstance;
 
   constructor() {
     this.server = fastify();
-    this.setup();
-  }
-
-  private async setup() {
-    await this.registerPlugins();
-    this.routes(); // Registra as rotas antes de iniciar o servidor
-    await this.connectToDb();
-  }
-
-  private async registerPlugins() {
-    await this.server.register(cors, {
+    this.server.register(cors, {
       origin: ['http://localhost:5173', 'http://localhost:3001'],
     });
+    this.routes();
+    this.connectToDb();
   }
 
   private routes() {
@@ -35,18 +28,26 @@ class App {
   }
 
   private async connectToDb() {
-    await connectToDb();
+    try {
+      await connectToDb();
+      console.log('✅ Connected to the database');
+    } catch (error) {
+      console.error('❌ Error connecting to the database:', error);
+    }
   }
 
-  public async start() {
+  public start() {
     const port = Number(process.env.PORT || 3000);
-    try {
-      await this.server.listen({ port, host: '0.0.0.0' });
-      console.log(`✅ Server is running on http://localhost:${port}`);
-    } catch (err) {
-      console.error('❌ Failed to start server:', err);
-      process.exit(1);
-    }
+    this.server.listen(
+      { port, host: '0.0.0.0' },
+      (err, address) => {
+        if (err) {
+          console.error('❌ Failed to start server:', err);
+          process.exit(1);
+        }
+        console.log(`✅ Server is running on ${address}`);
+      }
+    );
   }
 }
 
