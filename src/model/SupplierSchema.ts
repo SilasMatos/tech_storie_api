@@ -22,6 +22,7 @@ Supplier.init({
   contactInfo: {
     type: DataTypes.STRING,
     allowNull: false,
+    field: 'contactInfo',
   },
   createdat: {
     type: DataTypes.DATE,

@@ -19,6 +19,7 @@ const sequelize = new Sequelize(process.env.DATABASE_URL, {
 export const connectToDb = async () => {
   try {
     await sequelize.authenticate();
+    await sequelize.sync({ alter: true });
     console.log('✅ Conectado ao PostgreSQL com sucesso!');
   } catch (error) {
     console.error('❌ Erro ao conectar ao PostgreSQL:', error);
