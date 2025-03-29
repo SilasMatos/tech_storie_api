@@ -15,21 +15,21 @@ class App {
   }
 
   private setup() {
-    // Configurações iniciais
+
     this.server.register(cors, {
       origin: ['http://localhost:5173', 'http://localhost:3001'],
     });
 
-    // Registra rotas
+
     this.routes();
 
-    // Conecta ao banco de dados
+
     this.connectToDb();
   }
 
   private routes() {
-    this.server.get('/', this.index); // Rota principal
-    new MainRoutes(this.server); // Registra as rotas principais
+    this.server.get('/', this.index);
+    new MainRoutes(this.server);
   }
 
   private async index(request: FastifyRequest, reply: FastifyReply) {
