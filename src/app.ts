@@ -17,7 +17,7 @@ class App {
   private setup() {
 
     this.server.register(cors, {
-      origin: ['http://localhost:5173', 'http://localhost:3001'],
+      origin: true,
     });
 
 
