@@ -8,9 +8,10 @@ import { connectToDb } from './configs/database';
 
 class App {
   private server: FastifyInstance;
-
   constructor() {
-    this.server = fastify();
+    this.server = fastify({
+      logger: false,
+    });
     this.setup();
   }
 
